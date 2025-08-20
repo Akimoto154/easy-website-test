@@ -8,6 +8,11 @@ def load_steps(path: str) -> List[Dict[str, str]]:
         data = json.load(f)
     if not isinstance(data, list):
         raise ValueError("Scenario file must contain a list of steps")
+    for step in data:
+        if not isinstance(step, dict):
+            raise ValueError("Each step must be a dictionary")
+        if "action" not in step:
+            raise ValueError("Each step must include an 'action'")
     return data
 
 
