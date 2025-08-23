@@ -3,7 +3,13 @@ from typing import List, Dict
 
 # Supported step actions. Keeping this in a single place makes it easy to
 # validate scenarios before trying to execute them.
-ALLOWED_ACTIONS = {"goto", "click", "fill"}
+ALLOWED_ACTIONS = {
+    "goto",
+    "click",
+    "fill",
+    "wait_for_selector",
+    "assert_url_contains",
+}
 
 
 def load_steps(path: str) -> List[Dict[str, str]]:
@@ -38,6 +44,14 @@ def run_steps(steps: List[Dict[str, str]]) -> None:
                 page.click(step["selector"])
             elif action == "fill":
                 page.fill(step["selector"], step["text"])
+            elif action == "wait_for_selector":
+                page.wait_for_selector(step["selector"])
+            elif action == "assert_url_contains":
+                expected = step["text"]
+                if expected not in page.url:
+                    raise AssertionError(
+                        f"URL '{page.url}' does not contain '{expected}'"
+                    )
             else:
                 raise ValueError(f"Unknown action: {action}")
         browser.close()

@@ -1,0 +1,7 @@
+[
+  {"action": "goto", "url": "https://www.youtube.com"},
+  {"action": "wait_for_selector", "selector": "ytd-rich-grid-media a#video-title"},
+  {"action": "click", "selector": "ytd-rich-grid-media a#video-title"},
+  {"action": "wait_for_selector", "selector": "ytd-watch-flexy"},
+  {"action": "assert_url_contains", "text": "watch"}
+]

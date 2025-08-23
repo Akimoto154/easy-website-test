@@ -14,6 +14,17 @@ def test_load_steps(tmp_path):
     assert steps == [{"action": "goto", "url": "https://example.com"}]
 
 
+def test_load_steps_allows_new_actions(tmp_path):
+    scenario = tmp_path / "scenario.json"
+    scenario.write_text(
+        '[{"action": "wait_for_selector", "selector": "#id"}, '
+        '{"action": "assert_url_contains", "text": "example"}]'
+    )
+    steps = load_steps(str(scenario))
+    assert steps[0]["action"] == "wait_for_selector"
+    assert steps[1]["action"] == "assert_url_contains"
+
+
 def test_load_steps_requires_action(tmp_path):
     scenario = tmp_path / "scenario.json"
     scenario.write_text('[{"url": "https://example.com"}]')
