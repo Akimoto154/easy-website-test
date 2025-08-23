@@ -1,6 +1,10 @@
 import json
 from typing import List, Dict
 
+# Supported step actions. Keeping this in a single place makes it easy to
+# validate scenarios before trying to execute them.
+ALLOWED_ACTIONS = {"goto", "click", "fill"}
+
 
 def load_steps(path: str) -> List[Dict[str, str]]:
     """Load a scenario JSON file and return list of steps."""
@@ -11,8 +15,11 @@ def load_steps(path: str) -> List[Dict[str, str]]:
     for step in data:
         if not isinstance(step, dict):
             raise ValueError("Each step must be a dictionary")
-        if "action" not in step:
+        action = step.get("action")
+        if action is None:
             raise ValueError("Each step must include an 'action'")
+        if action not in ALLOWED_ACTIONS:
+            raise ValueError(f"Unknown action: {action}")
     return data
 
 

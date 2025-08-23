@@ -26,3 +26,10 @@ def test_load_steps_requires_dict(tmp_path):
     scenario.write_text('[123]')
     with pytest.raises(ValueError):
         load_steps(str(scenario))
+
+
+def test_load_steps_unknown_action(tmp_path):
+    scenario = tmp_path / "scenario.json"
+    scenario.write_text('[{"action": "dance"}]')
+    with pytest.raises(ValueError):
+        load_steps(str(scenario))
